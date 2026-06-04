@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Statistik – StravaDB{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Statistik</h1>
+    <p class="subtitle">Detaljerede nøgletal per aktivitetstype</p>
+</div>
+
+<h2>Gennemsnit, maks og minimum per type</h2>
+<div class="table-wrapper">
+<table>
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Antal</th>
+            <th>Gns. dist.</th>
+            <th>Maks. dist.</th>
+            <th>Min. dist.</th>
+            <th>Gns. varighed</th>
+            <th>Maks. varighed</th>
+            <th>Gns. pace</th>
+            <th>Gns. puls</th>
+            <th>Gns. kcal</th>
+            <th>Total stigning</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for s in type_stats %}
+    <tr>
+        <td><span class="badge badge-{{ s.type | lower | replace(' ', '-') }}">{{ s.type }}</span></td>
+        <td>{{ s.count }}</td>
+        <td>{{ s.avg_distance or '—' }}{% if s.avg_distance %} km{% endif %}</td>
+        <td>{{ s.max_distance or '—' }}{% if s.max_distance %} km{% endif %}</td>
+        <td>{{ s.min_distance or '—' }}{% if s.min_distance %} km{% endif %}</td>
+        <td>{{ s.avg_duration or '—' }}{% if s.avg_duration %} min{% endif %}</td>
+        <td>{{ s.max_duration or '—' }}{% if s.max_duration %} min{% endif %}</td>
+        <td>{{ fmt_pace(s.avg_pace, s.type) }}</td>
+        <td>{{ s.avg_hr | int if s.avg_hr else '—' }}{% if s.avg_hr %} bpm{% endif %}</td>
+        <td>{{ s.avg_cal | int if s.avg_cal else '—' }}</td>
+        <td>{{ s.total_elev or '—' }}{% if s.total_elev %} m{% endif %}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<h2>Løbeture – seneste 50 (database-view)</h2>
+<p class="note">Baseret på SQL-viewet <code>running_stats</code> i databasen.</p>
+
+{% if run_stats %}
+<div class="table-wrapper">
+<table>
+    <thead>
+        <tr>
+            <th>Dato</th>
+            <th>Titel</th>
+            <th>Distance</th>
+            <th>Varighed</th>
+            <th>Pace</th>
+            <th>Stigning</th>
+            <th>Puls</th>
+            <th>Kcal</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for r in run_stats %}
+    <tr>
+        <td>{{ r.date }}</td>
+        <td>{{ r.title or '—' }}</td>
+        <td>{{ r.distance_km }} km</td>
+        <td>{{ r.duration_min }} min</td>
+        <td>{{ fmt_pace(r.pace_min_km, 'Run') }}</td>
+        <td>{{ r.elevation_m or '—' }}{% if r.elevation_m %} m{% endif %}</td>
+        <td>{{ r.avg_hr_bpm or '—' }}{% if r.avg_hr_bpm %} bpm{% endif %}</td>
+        <td>{{ r.calories or '—' }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% else %}
+<p class="empty-state">Ingen løbedata fundet.</p>
+{% endif %}
+{% endblock %}

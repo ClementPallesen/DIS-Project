@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Aktiviteter – StravaDB{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Aktiviteter</h1>
+    <p class="subtitle">{{ activities | length }} aktiviteter fundet</p>
+</div>
+
+<form class="filter-bar" method="get">
+    <div class="filter-group">
+        <label for="type">Type</label>
+        <select name="type" id="type">
+            <option value="">Alle typer</option>
+            {% for t in types %}
+            <option value="{{ t }}" {% if t == selected_type %}selected{% endif %}>{{ t }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="min_distance">Min. distance (km)</label>
+        <input type="number" name="min_distance" id="min_distance"
+               step="0.1" min="0" value="{{ min_distance }}" placeholder="f.eks. 10">
+    </div>
+    <button type="submit" class="btn btn-primary">Filtrer</button>
+    <a href="{{ url_for('activities') }}" class="btn btn-secondary">Nulstil</a>
+</form>
+
+{% if activities %}
+<div class="table-wrapper">
+<table>
+    <thead>
+        <tr>
+            <th>Dato</th>
+            <th>Type</th>
+            <th>Titel</th>
+            <th>Distance</th>
+            <th>Varighed</th>
+            <th>Pace / Fart</th>
+            <th>Puls</th>
+            <th>Kcal</th>
+            <th>Gear</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for a in activities %}
+        <tr>
+            <td>{{ a.date }}</td>
+            <td><span class="badge badge-{{ a.type | lower | replace(' ', '-') }}">{{ a.type }}</span></td>
+            <td>{{ a.title or '—' }}</td>
+            <td>{{ a.distance_km or '—' }}{% if a.distance_km %} km{% endif %}</td>
+            <td>{{ a.duration_min or '—' }}{% if a.duration_min %} min{% endif %}</td>
+            <td>{{ fmt_pace(a.pace_min_km, a.type) }}</td>
+            <td>{{ a.avg_hr_bpm or '—' }}{% if a.avg_hr_bpm %} bpm{% endif %}</td>
+            <td>{{ a.calories or '—' }}</td>
+            <td>{{ a.gear_name or '—' }}</td>
+            <td>
+                <form method="post" action="{{ url_for('delete_activity', activity_id=a.activity_id) }}"
+                      onsubmit="return confirm('Slet denne aktivitet?')">
+                    <button type="submit" class="btn-delete" title="Slet">&#x2715;</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% else %}
+<p class="empty-state">Ingen aktiviteter matcher dit filter.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Tilføj aktivitet – StravaDB{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Tilføj aktivitet</h1>
+    <p class="subtitle">Manuel registrering af en ny aktivitet (INSERT INTO Activity)</p>
+</div>
+
+<div class="form-card">
+<form method="post" class="activity-form">
+    <div class="form-row">
+        <div class="form-group">
+            <label for="type">Type *</label>
+            <select name="type" id="type" required>
+                <option value="">Vælg type</option>
+                <option value="Run">Run</option>
+                <option value="Ride">Ride</option>
+                <option value="Swim">Swim</option>
+                <option value="Weight Training">Weight Training</option>
+                <option value="Elliptical">Elliptical</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="date">Dato *</label>
+            <input type="date" name="date" id="date" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="title">Titel</label>
+        <input type="text" name="title" id="title" placeholder="f.eks. Morning Run">
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="distance">Distance (km)</label>
+            <input type="number" name="distance" id="distance" step="0.01" min="0" placeholder="10.00">
+        </div>
+        <div class="form-group">
+            <label for="duration">Varighed (min)</label>
+            <input type="number" name="duration" id="duration" step="0.1" min="0" placeholder="55.5">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="elevation">Stigning (m)</label>
+            <input type="number" name="elevation" id="elevation" step="0.1" min="0" placeholder="120">
+        </div>
+        <div class="form-group">
+            <label for="avg_hr">Gns. puls (bpm)</label>
+            <input type="number" name="avg_hr" id="avg_hr" step="1" min="0" max="250" placeholder="155">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="calories">Kalorier (kcal)</label>
+        <input type="number" name="calories" id="calories" step="1" min="0" placeholder="600">
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Gem aktivitet</button>
+        <a href="{{ url_for('activities') }}" class="btn btn-secondary">Annuller</a>
+    </div>
+</form>
+</div>
+{% endblock %}
