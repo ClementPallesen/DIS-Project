@@ -1,19 +1,11 @@
-<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS Athlete (
-=======
-CREATE TABLE Athlete (
->>>>>>> 9adb4cf46f243019b2c3608690b42fcc786e8487
     id INTEGER PRIMARY KEY,
     name TEXT,
     gender TEXT,
     age INTEGER
 );
 
-<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS Gear (
-=======
-CREATE TABLE Gear (
->>>>>>> 9adb4cf46f243019b2c3608690b42fcc786e8487
     gear_id INTEGER PRIMARY KEY,
     name TEXT,
     brand TEXT,
@@ -21,11 +13,7 @@ CREATE TABLE Gear (
     max_km NUMERIC(7,0)
 );
 
-<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS Activity (
-=======
-CREATE TABLE Activity (
->>>>>>> 9adb4cf46f243019b2c3608690b42fcc786e8487
     activity_id BIGINT PRIMARY KEY,
     athlete_id  INTEGER REFERENCES Athlete(id),
     gear_id     INTEGER REFERENCES Gear(gear_id),
@@ -40,7 +28,6 @@ CREATE TABLE Activity (
     avg_hr_bpm  INTEGER
 );
 
-<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS Route (
     name        TEXT,
     route_id    TEXT PRIMARY KEY,
@@ -48,26 +35,13 @@ CREATE TABLE IF NOT EXISTS Route (
 );
 
 CREATE TABLE IF NOT EXISTS Segments (
-=======
-CREATE TABLE Route (
-    name       TEXT,
-    route_id   TEXT PRIMARY KEY,
-    activity_id INTEGER REFERENCES Activity(activity_id)
-);
-
-CREATE TABLE Segments (
->>>>>>> 9adb4cf46f243019b2c3608690b42fcc786e8487
     segment_id  TEXT PRIMARY KEY,
     activity_id INTEGER REFERENCES Activity(activity_id),
     length      NUMERIC(6,2)
 );
 
 -- View: alle løbeture med beregnet pace (bonus)
-<<<<<<< HEAD
 CREATE OR REPLACE VIEW running_stats AS
-=======
-CREATE VIEW running_stats AS
->>>>>>> 9adb4cf46f243019b2c3608690b42fcc786e8487
 SELECT
     date,
     title,
@@ -79,7 +53,3 @@ SELECT
     calories
 FROM Activity
 WHERE type = 'Run' AND distance_km > 0;
-<<<<<<< HEAD
-=======
-
->>>>>>> 9adb4cf46f243019b2c3608690b42fcc786e8487
